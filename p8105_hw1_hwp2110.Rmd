@@ -1,0 +1,48 @@
+---
+title: "P8105 HW 1"
+author: "hwp2110 / Helen Peng"
+output: github_document
+---
+
+# Problem 1
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+data("penguins", package = "palmerpenguins")
+
+# names(penguins)
+```
+
+The variables in this dataset are `species`, `island`, `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, `body_mass_g`, `sex`, and `year`. The dataset has `r ncol(penguins)` columns and `r nrow(penguins)` rows. The mean flipper length is `r mean(pull(penguins, flipper_length_mm), na.rm = TRUE)` mm. 
+
+```{r}
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+
+ggsave("scatterplot.png")
+```
+# Problem 2
+
+```{r}
+problem_df = tibble(
+  num_var = rnorm(10),
+  log_var = num_var > 0,
+  char_var = c("a","b","c","d","e","f","g","h","i","j"),
+  fact_var = factor(sample(c("low","middle","high"), size = 10, replace = TRUE))
+)
+
+problem_df
+```
+
+```{r eval = FALSE}
+mean(pull(problem_df, num_var), na.rm = TRUE)
+mean(pull(problem_df, log_var), na.rm = TRUE)
+mean(pull(problem_df, char_var), na.rm = TRUE)
+mean(pull(problem_df, fact_var), na.rm = TRUE)
+
+as.numeric(mean(pull(problem_df, log_var), na.rm = TRUE))
+as.numeric(mean(pull(problem_df, char_var), na.rm = TRUE))
+as.numeric(mean(pull(problem_df, fact_var), na.rm = TRUE))
+```
+Taking the mean of a numeric vector or a logical vector work but not taking the mean of a character vector or a factor vector. Even after using the function `as.numeric` only logical and numeric vectors work. You would get warning that says argument is not numeric or logical: returning NA (not applicable).
+
+
